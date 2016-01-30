@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Plugin para o Vim | appolinario.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Plugin para o Vim">
+<meta property="og:url" content="http://appolinario.com/2015/06/02/Plugin-para-o-Vim/index.html">
+<meta property="og:site_name" content="appolinario.com">
+<meta property="og:description" content="A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plu">
+<meta property="og:updated_time" content="2016-01-30T01:08:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Plugin para o Vim">
+<meta name="twitter:description" content="A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plu">
+  
+    <link rel="alternative" href="/atom.xml" title="appolinario.com" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">appolinario.com</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Algumas coisas desenvolvidas em C++ e .Net</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://appolinario.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Plugin-para-o-Vim" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/06/02/Plugin-para-o-Vim/" class="article-date">
+  <time datetime="2015-06-02T17:13:42.000Z" itemprop="datePublished">2015-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Plugin para o Vim
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plugins. E existem muitos, para diversas funções. Alguns testei por um tempo, outros já não deixo de usar de maneira nenhuma.<br>E vendo essa diversidade de plugins e com tanta gente fazendo e utilizando acabei me interessando bastante, e quis aprender um pouco mais. E pra começar a entender nada melhor que fazer um plugin simples que me ajudaria com uma atividade corriqueira do trabalho.</p>
+<h3 id="A_motivação">A motivação</h3><p>No dia a dia, muitas vezes me deparo com mensagens do <a href="http://en.wikipedia.org/wiki/Financial_Information_eXchange" target="_blank" rel="external">protocolo FIX</a>, que possui um formato de pares chave e valor, separados por um ‘=’ e esses pares separados por um caractere ASCII 01. Normalmente preciso destes valores transformados em um formato mais fácil de ler e com os códigos numéricos dos campos <em>traduzidos</em> para os nomes, pois com frequência preciso visualizar essas mensagens extraídas de <em>logs</em> de aplicação. Até aí eu poderia desenvolver algum aplicativo pra quebrar a mensagem e ver os valores, mas por motivos de aprendizado preferi fazer um plugin pro vi, que é onde costumo abrir esses arquivos de <em>log</em>.</p>
+<h3 id="O_plugin">O plugin</h3><p>O primeiro passo foi procurar material sobre desenvolvimento de plugin pro vi, o que acreditava não ser tão difícil pois o Vi e a grande maioria desses plugins são de <a href="https://github.com/search?utf8=%E2%9C%93&amp;q=vim+plugin&amp;ref=simplesearch" target="_blank" rel="external">código aberto</a>. E foi mais fácil que imaginava, o próprio vi e tem no seu sistema de ajuda, que é ótimo por sinal, uma seção dedicada a <a href="http://vimdoc.sourceforge.net/htmldoc/usr_41.html" target="_blank" rel="external">criação de plugins</a>. Mas aqui não vou traduzir a página de ajuda, mas sim comentar sobre o que mais precisei e o que achei de diferença para as linguagens que eu conheço.</p>
+<h3 id="O_código">O código</h3><h4 id="Sintaxe">Sintaxe</h4><p>A sintaxe da VimL é bem familiar para qualquer desenvolvedor que já tenha trabalhado com <strong>bash</strong>, <strong>C</strong>, javascript. Com a diferença sendo a interação com os <em>buffers</em>, janelas e barra de comandos do Vi. Como o código fica parecido com essas linguagens já elimina um choque&nbsp;cultural&nbsp;logo de início.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a == <span class="string">'a'</span></span><br><span class="line">    let b = <span class="number">0</span></span><br><span class="line">endif</span><br></pre></td></tr></table></figure></p>
+<h4 id="Definindo_escopos">Definindo escopos</h4><p>Já com o escopo das variáveis e das funções, isso muda.<br>Para variáveis:</p>
+<ul>
+<li>Para definir uma variável global é necessário prefixar com <strong>g:</strong>&nbsp;</li>
+<li>para uma com escopo apenas do <em>script</em> é necessário prefixar com <strong>s:</strong>&nbsp;</li>
+<li>uma variável que seja passada como parâmetro para uma função tem que ser utilizado o prefixo <strong>a: </strong>mas nesse ultimo caso somente no momento do acesso a variável.<br>E para funções é possível separara-las em diversos arquivos e subdiretórios. Para identificar isso basta concaternar o nome do arquivo e caminho com # nas chamadas<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call fix44dict<span class="preprocessor">#loadFixDictionary()</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Comandos_e_Funções">Comandos e Funções</h4><p>Uma coisa que é necessário diferenciar ao programar em VimL é que existe uma diferença entre comando do editor e funções da VimL e geralmente um plugin acaba utilizando os dois. Isso quer dizer, que algumas coisas que um usuário de vi faz no editor não necessariamente é feito da mesma maneira no plugin.<br>Esses foram os pontos de atenção que eu encontrei, isso fazendo um script bem simples. Com certeza fazendo coisas mais interessantes mais peculiaridades apareçam. E para ilustrar o que falei acima vamos a alguns trechos de código.<br>Para manter um padrão que vi nos fontes de outros Plugins, um pequeno cabeçalho:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">" fixprotocol.vim - converts FIX to xml</span><br><span class="line">" Maintainer:   Vitor Appolinario</span><br><span class="line">" Version:      0.1</span><br></pre></td></tr></table></figure></p>
+<p>logo de cara uma guarda no estilo #ifdef para evitar carregar o plugin mais de uma vez:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"checks if plugin is already loaded or is in compatibility mode</span><br><span class="line">if exists("g:vim_fixprotocol_loaded") || &amp;amp;cp</span><br><span class="line">  finish</span><br><span class="line">endif</span><br><span class="line">let g:vim_fixprotocol_loaded = 1</span><br></pre></td></tr></table></figure></p>
+<p>Algumas variáveis globais para que o usuário possa ajustar alguns parâmetros do plugin para a necessidade dele:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">" checks if user has configured the protocol version</span><br><span class="line">if !exists('g:fixprotocol_fixversion')</span><br><span class="line">    let g:fixprotocol_fixversion = '42'</span><br><span class="line">endif</span><br><span class="line">" checks if user has configured the xml root tag</span><br><span class="line">let g:fixprotocol_root_tag = 'FIXMESSAGE'</span><br><span class="line">    if !exists('g:fixprotocol_root_tag')</span><br><span class="line">endif</span><br></pre></td></tr></table></figure></p>
+<p>Uma função que carrega o dicionario FIX de acordo com a versão escolhida pelo usuário, notando que os dicionários ficam em outros dois arquivos separados e precisei usar o nome do arquivo na chamada da função:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">" loads a map with the fix dictionary according with version chosen</span><br><span class="line">function! fixprotocol#initDictionary()</span><br><span class="line">    if g:fixprotocol_fixversion == '44'</span><br><span class="line">        call fix44dict#loadFixDictionary()</span><br><span class="line">    else</span><br><span class="line">        call fix42dict#loadFixDictionary()</span><br><span class="line">    endif</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure></p>
+<p>Aqui uma função que usa o dicionario para traduzir o código do campo para o nome do campo reparando que os parâmetros são definidos apenas com os nomes das variáveis, mas o seu uso é prefixado o <strong>a:</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">" get a xml tag with field name and value</span><br><span class="line">function! fixprotocol#getXmlString(field, value)</span><br><span class="line">    let name = fixprotocol#getFieldName(a:field)</span><br><span class="line">    return '&amp;lt;' . name  . '&amp;gt;' . a:value . '&amp;lt;/' . name . '&amp;gt;'</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure></p>
+<p>E no fim a função que realmente faz a transformação dos campos em XML. Sendo a parte de tratamento da mensagem apenas uma expressão regular. Aqui podemos ver uma combinação de comando do editor <a href="http://vimdoc.sourceforge.net/htmldoc/change.html#:substitute" target="_blank" rel="external">:substitute</a> com funções da VimL <a href="http://vimdoc.sourceforge.net/htmldoc/eval.html#submatch(" target="_blank" rel="external">submatch</a>)&nbsp;e uma função do <em>script</em> <strong>getFieldName.</strong><br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">" converts the current line fom fixmessage to Xml</span><br><span class="line">function! fixprotocol#toXml()</span><br><span class="line">    " add the opening xml tag</span><br><span class="line">    call append(line(".")-1, '&amp;lt;' . g:fixprotocol_root_tag . '&amp;gt;')</span><br><span class="line">    " transform the msg into xml</span><br><span class="line">    :substitute /\([^=]\+\)=\([^=]\+\)\(\%x01\)/\=fixprotocol#getXmlString(submatch(1), submatch(2))/g</span><br><span class="line">    " adds the closing xml tag</span><br><span class="line">    call append(line("."), '&amp;lt;/' . g:fixprotocol_root_tag . '&amp;gt;')</span><br><span class="line">endfunction</span><br></pre></td></tr></table></figure></p>
+<p>E ao final criamos um novo comando para o editor<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">" add the command for command bar</span><br><span class="line">command! -bar FixToXml call fixprotocol#toXml()</span><br></pre></td></tr></table></figure></p>
+<p>No fim de tudo temos um plugin bem simples, utilizando alguns recursos do vim e VimL.</p>
+<h3 id="Conclusão">Conclusão</h3><p>Criar um plugin simples para o Vi não é tão complicado, apenas precisa se familiarizar com os comandos e um sintaxe um pouco diferente do habitual. Obviamente para tarefas mais complexas é necessário entender melhor e conhecer mais comandos do editor, mas o sistema de ajuda está ai para isso.Não abordei aqui o uso de outras linguagens como Python e Ruby que são bastante utilizadas para o desenvolvimento de scripts para o Vi pois queria focar apenas no editor e suas funcionalidades.&nbsp;<br>O código fonte para este plugin esta disponível neste repositório:&nbsp;<a href="https://bitbucket.org/vappolinario/vim-fixprotocol" target="_blank" rel="external">vim-fixprotocol</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://appolinario.com/2015/06/02/Plugin-para-o-Vim/" data-id="cik0d48bq00002bn2owvf9lqn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FIX/">FIX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plugin/">Plugin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vi/">Vi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vim/">Vim</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XML/">XML</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/06/28/Integrando-C-e-C-via-servico-REST-Parte-II/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Integrando C# e C++ via serviço REST - Parte II
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/06/02/Integrando-C-e-C-via-servico-REST/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Integrando C# e C++ via serviço REST</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Net/">.Net</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COM/">COM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clr/">Clr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClrHosting/">ClrHosting</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FIX/">FIX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Microsoft/">Microsoft</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vi/">Vi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Net/" style="font-size: 20px;">.Net</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/COM/" style="font-size: 10px;">COM</a> <a href="/tags/Clr/" style="font-size: 15px;">Clr</a> <a href="/tags/ClrHosting/" style="font-size: 15px;">ClrHosting</a> <a href="/tags/FIX/" style="font-size: 10px;">FIX</a> <a href="/tags/Microsoft/" style="font-size: 15px;">Microsoft</a> <a href="/tags/Plugin/" style="font-size: 10px;">Plugin</a> <a href="/tags/REST/" style="font-size: 15px;">REST</a> <a href="/tags/RESTful/" style="font-size: 15px;">RESTful</a> <a href="/tags/Vi/" style="font-size: 10px;">Vi</a> <a href="/tags/Vim/" style="font-size: 10px;">Vim</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/json/" style="font-size: 15px;">json</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">Junho 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">Dezembro 2012</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/06/28/Integrando-C-e-C-via-servico-REST-Parte-II/">Integrando C# e C++ via serviço REST - Parte II</a>
+          </li>
+        
+          <li>
+            <a href="/2015/06/02/Plugin-para-o-Vim/">Plugin para o Vim</a>
+          </li>
+        
+          <li>
+            <a href="/2015/06/02/Integrando-C-e-C-via-servico-REST/">Integrando C# e C++ via serviço REST</a>
+          </li>
+        
+          <li>
+            <a href="/2012/12/07/Clr-Hosting-Transferindo-Objetos/">Clr Hosting - Transferindo Objetos</a>
+          </li>
+        
+          <li>
+            <a href="/2012/12/07/Clr-Hosting/">Clr Hosting</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Vitor Appolinario<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

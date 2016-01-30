@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Clr Hosting - Transferindo Objetos | appolinario.com</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="No último artigo demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clr Hosting - Transferindo Objetos">
+<meta property="og:url" content="http://appolinario.com/2012/12/07/Clr-Hosting-Transferindo-Objetos/index.html">
+<meta property="og:site_name" content="appolinario.com">
+<meta property="og:description" content="No último artigo demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win">
+<meta property="og:image" content="http://4.bp.blogspot.com/-AyKbxpwVKGk/ULZ0cZafBwI/AAAAAAAACzw/d_SNDZUtdNk/s1600/tlbexp.png">
+<meta property="og:image" content="http://1.bp.blogspot.com/-kqFs2yV6_pA/ULZ-n3p1ZvI/AAAAAAAAC0A/WGiw4CVGick/s1600/Soma.png">
+<meta property="og:updated_time" content="2016-01-30T00:55:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Clr Hosting - Transferindo Objetos">
+<meta name="twitter:description" content="No último artigo demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win">
+  
+    <link rel="alternative" href="/atom.xml" title="appolinario.com" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">appolinario.com</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Algumas coisas desenvolvidas em C++ e .Net</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://appolinario.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Clr-Hosting-Transferindo-Objetos" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2012/12/07/Clr-Hosting-Transferindo-Objetos/" class="article-date">
+  <time datetime="2012-12-07T21:05:45.000Z" itemprop="datePublished">2012-12-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Clr Hosting - Transferindo Objetos
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>No <a href="http://www.appolinario.com/2012/11/clr-hosting_22.html" target="_blank" rel="external">último <span id="goog_411732278"></span>artigo</a> <span id="goog_411732279"></span>demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win32. Para isso iremos criar um formulário no lado .Net, exibir utilizando o C++ e alimentar este formulário com dados da parte não gerenciada.</p>
+<h3 id="COM">COM</h3><p>Essa troca de objetos entre o modo gerenciado e não gerenciado será feito através de interfaces COM dentro do mesmo processo, mas para termos as interfaces acessíveis tanto na parte .Net quanto C++ é preciso que sejam declaradas em um dos lados e depois exportar para o outro. Neste artigo declaramos as interfaces no lado .Net e usaremos a ferramenta tlbexp.exe para gerar um arquivo _<strong>tlb</strong> _o qual será incluído nos fontes do lado C++.</p>
+<h3 id="Declarando_as_Interfaces">Declarando as Interfaces</h3><p>Dentro do projeto .Net declaramos as duas interfaces que serão utilizadas, tanto a que será implementada no .Net quanto no C++ e compilamos isso em uma DLL.<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]</span><br><span class="line">[ComVisible(<span class="keyword">true</span>)]</span><br><span class="line">[Guid(<span class="string">"F0483A98-DE08-4886-AAD5-E4FDBA0DA482"</span>)]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IManagedControl</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function">IntPtr <span class="title">CreateForm</span>(<span class="params">IUnmanagedCode code</span>)</span>;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">SetCaption</span>(<span class="params"><span class="keyword">string</span> text</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]</span><br><span class="line">[ComVisible(<span class="keyword">true</span>)]</span><br><span class="line">[Guid(<span class="string">"9FEC93AF-4BA4-4E2E-9213-8EA9A3471E21"</span>)]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IUnmanagedCode</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> a, <span class="keyword">int</span> b</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>E a partir da dll gerada exportamos isso com a ferramenta <strong>tlbexp.exe </strong>que gera o arquivo <strong>tlb</strong> a ser incluído no código C++.</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="http://4.bp.blogspot.com/-AyKbxpwVKGk/ULZ0cZafBwI/AAAAAAAACzw/d_SNDZUtdNk/s1600/tlbexp.png" target="_blank" rel="external"><img src="http://4.bp.blogspot.com/-AyKbxpwVKGk/ULZ0cZafBwI/AAAAAAAACzw/d_SNDZUtdNk/s1600/tlbexp.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Exportando o tlb</td></tr></tbody></table>Para utilizarmos o arquivo contendo as interfaces basta usar a diretiva <em>#<strong>import </strong></em><br><em>
+</em><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import <span class="string">"..\ClrHosting.Dummy\bin\Debug\ClrHosting.Dummy.tlb"</span> raw_interfaces_only</span></span><br></pre></td></tr></table></figure></p>
+<p><a name="more"></a></p>
+<h3 id="Trocando_objetos">Trocando objetos</h3><p>Agora que as interfaces estão disponíveis temos de implementar cada uma delas em seu respectivo domínio.</p>
+<h4 id="-Net">.Net</h4><p>Do lado .Net além da Implementação da interface _<strong>IManagedControl </strong><em>teremos também a implementação do formulário que será utilizado no C++, no exemplo será um formulário simples, com 3 caixas de texto e um botão que chamará um método de soma no lado C++ pela interface </em><strong>IUnmanagedCode</strong>_.<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">DummyForm</span> : <span class="title">Form</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">private</span> IUnmanagedCode code_;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">DummyForm</span>(<span class="params">IUnmanagedCode code</span>)</span><br><span class="line"> </span>&#123;</span><br><span class="line">  InitializeComponent();</span><br><span class="line">  code_ = code;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">button1_Click</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>)</span><br><span class="line"> </span>&#123;</span><br><span class="line">  txtAdd.Text = code_.Add(<span class="keyword">int</span>.Parse(txtA.Text), <span class="keyword">int</span>.Parse(txtB.Text)).ToString();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AddImpl</span> : <span class="title">IManagedControl</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">private</span> Form form_;</span><br><span class="line"> <span class="preprocessor">#<span class="keyword">region</span> IManagedControl Members</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> IntPtr <span class="title">CreateForm</span>(<span class="params">IUnmanagedCode code</span>)</span><br><span class="line"> </span>&#123;</span><br><span class="line">  form_ = <span class="keyword">new</span> DummyForm(code);</span><br><span class="line">  <span class="keyword">return</span> form_.Handle;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetCaption</span>(<span class="params"><span class="keyword">string</span> text</span>)</span><br><span class="line"> </span>&#123;</span><br><span class="line">  form_.Text = text;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="preprocessor">#<span class="keyword">endregion</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="C++">C++</h4><p>O código do C++ é uma simples função de soma da interface <em><strong>IUnmanagedCode</strong></em>, e a implementação da interface <strong>IUnknowInterface </strong>.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> UnmanagedCodeImpl : <span class="keyword">public</span> ClrHosting_Dummy::IUnmanagedCode</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"> <span class="keyword">volatile</span> <span class="keyword">long</span> refCount_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"> UnmanagedCodeImpl(<span class="keyword">void</span>);</span><br><span class="line"> ~UnmanagedCodeImpl(<span class="keyword">void</span>);</span><br><span class="line"></span><br><span class="line"> <span class="comment">// IUnmanagedCode</span></span><br><span class="line"> <span class="function"><span class="keyword">virtual</span> HRESULT WINAPI <span class="title">Add</span><span class="params">(<span class="keyword">long</span> a,<span class="keyword">long</span> b, <span class="keyword">long</span>* pRetVal)</span></span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// IUnknown methods</span></span><br><span class="line"> <span class="function"><span class="keyword">virtual</span> HRESULT WINAPI <span class="title">QueryInterface</span><span class="params">(REFIID riid, <span class="keyword">void</span>** ppv)</span></span>;</span><br><span class="line"> <span class="function"><span class="keyword">virtual</span> ULONG WINAPI <span class="title">AddRef</span><span class="params">()</span></span>;</span><br><span class="line"> <span class="function"><span class="keyword">virtual</span> ULONG WINAPI <span class="title">Release</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">HRESULT WINAPI UnmanagedCodeImpl::Add(<span class="keyword">long</span> a,<span class="keyword">long</span> b, <span class="keyword">long</span>* pRetVal)</span><br><span class="line">&#123;</span><br><span class="line"> (*pRetVal) = a + b;</span><br><span class="line"> <span class="keyword">return</span> S_OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Implementação da interface IUnknown omitida</span></span><br></pre></td></tr></table></figure></p>
+<p>Com a implementação das interfaces prontas temos de realizar a troca dos objetos, do lado do .Net é criado uma instância de <strong><em>AddImpl</em></strong> da qual é feito um <em><strong>Marshal</strong></em> para uma interface COM e essa é passada como um ponteiro para o lado não gerenciado. Isso é feito com o método <em>GetComInterfaceForObject</em>, onde passamos o objeto e com qual interface COM será exposto. Conforme vimos também, a única assinatura de método disponível para chamarmos via <strong>CLRRuntimeHost</strong> retorna um <em><strong>int</strong></em> que é por onde devemos passamos o ponteiro.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DummyEntryPoint</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">ClrEntryPoint</span>(<span class="params">String text</span>)</span><br><span class="line"> </span>&#123;</span><br><span class="line">  AddImpl impl = <span class="keyword">new</span> AddImpl();</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">int</span>)Marshal.GetComInterfaceForObject(impl, <span class="keyword">typeof</span>(IManagedControl));</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>No C++ além da inicialização da CLR, precisamos fazer o <em>cast</em> do int para o CComPtr que receberá a interface que solicitamos no .Net e criamos uma instância da implementação de <strong><em>IManagedControl</em></strong> que é o necessário para utilizar os objetos no lado não gerenciado e prover dados para o lado gerenciado.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// chamada pela ClrHost para criação do objeto .net</span></span><br><span class="line">hr = pClrRuntimeHost-&gt;ExecuteInDefaultAppDomain(</span><br><span class="line"> <span class="string">L"D:\\ClrHosting.Dummy\\bin\\Debug\\ClrHosting.Dummy.dll"</span>, <span class="comment">// Caminho do assembly</span></span><br><span class="line"> <span class="string">L"ClrHosting.Dummy.DummyEntryPoint"</span>, <span class="comment">// Nome do Tipo</span></span><br><span class="line"> <span class="string">L"ClrEntryPoint"</span>, <span class="comment">// Nome do método</span></span><br><span class="line"> <span class="string">L""</span>, <span class="comment">// parâmetro</span></span><br><span class="line"> &amp;retVal); <span class="comment">// retorno</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Objeto do .net</span></span><br><span class="line">CComPtr&lt;ClrHosting_Dummy::IManagedControl&gt; netobj = (ClrHosting_Dummy::IManagedControl*)retVal;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Implementacao C++</span></span><br><span class="line">CComPtr&lt;ClrHosting_Dummy::IUnmanagedCode&gt; unmanaged = <span class="keyword">new</span> UnmanagedCodeImpl();</span><br><span class="line"></span><br><span class="line"><span class="comment">// criação de form .net</span></span><br><span class="line"><span class="keyword">long</span> frmHandle;</span><br><span class="line">netobj-&gt;CreateForm(unmanaged, &amp;frmHandle);</span><br><span class="line"></span><br><span class="line"><span class="comment">// exibir o form .net com a API do windows</span></span><br><span class="line">::ShowWindow((HWND)frmHandle, SW_SHOWDEFAULT);</span><br><span class="line"></span><br><span class="line"><span class="comment">// chamada do c++ p/ .net</span></span><br><span class="line">netobj-&gt;SetCaption(<span class="string">L"C++"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ( SUCCEEDED(hr) )</span><br><span class="line">&#123;</span><br><span class="line"> MSG  msg;</span><br><span class="line"> <span class="keyword">while</span> (::GetMessage(&amp;msg, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>) ) </span><br><span class="line"> &#123;</span><br><span class="line">  ::TranslateMessage(&amp;msg);</span><br><span class="line">  ::DispatchMessage(&amp;msg);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Neste código são executadas as seguintes operações:</p>
+<ul>
+<li>Com a chamada do método <strong><em>ExecuteInDefaultAppDomain </em></strong>obtemos um ponteiro para a interface <strong><em>IManagedControl</em></strong>, e temos assim a referência do objeto gerenciado;</li>
+<li>Com a chamada do método <strong><em>CreateForm </em></strong>passamos o ponteiro do objeto não gerenciado para o .Net;</li>
+<li>Com o método <strong><em>SetCaption </em></strong>enviamos dados do C++ para o .Net;</li>
+<li>Clicando no botão <em>Soma</em> do formulário é chamado o método <strong><em>Add</em></strong> da interface <strong><em>IUnmanagedCode</em></strong> onde é enviado dados para C++ e recebe uma resposta;<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="http://1.bp.blogspot.com/-kqFs2yV6_pA/ULZ-n3p1ZvI/AAAAAAAAC0A/WGiw4CVGick/s1600/Soma.png" target="_blank" rel="external"><img src="http://1.bp.blogspot.com/-kqFs2yV6_pA/ULZ-n3p1ZvI/AAAAAAAAC0A/WGiw4CVGick/s1600/Soma.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Formulário .Net com dados do C++</td></tr></tbody></table><br>Desta forma conseguimos criar controles gerenciados e utilizar num ambiente não gerenciado, o que permite a utilização de componentes disponíveis, que era a minha necessidade, assim como permite a criação de um esquema de plugin com uma liberdade maior de tecnologias para a expansão do aplicativo.</li>
+</ul>
+<h3 id="Links">Links</h3><p><a href="http://msdn.microsoft.com/en-us/library/sd10k43k.aspx" target="_blank" rel="external">Interoperating with Unmanaged Code</a><br><a href="http://msdn.microsoft.com/en-us/library/hfzzah2c.aspx" target="_blank" rel="external">Tlbexp.exe</a><br><a href="http://msdn.microsoft.com/en-us/library/office/cc839627.aspx" target="_blank" rel="external">Implementing IUnknown in C++</a><br><a href="http://msdn.microsoft.com/en-us/library/e9yxzabz.aspx" target="_blank" rel="external">Marshal.GetComInterfaceForObject Method</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://appolinario.com/2012/12/07/Clr-Hosting-Transferindo-Objetos/" data-id="cik0d48d600112bn206a7a29w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Net/">.Net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/COM/">COM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clr/">Clr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClrHosting/">ClrHosting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Microsoft/">Microsoft</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/06/02/Integrando-C-e-C-via-servico-REST/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Integrando C# e C++ via serviço REST
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2012/12/07/Clr-Hosting/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Clr Hosting</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Net/">.Net</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COM/">COM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clr/">Clr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClrHosting/">ClrHosting</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FIX/">FIX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Microsoft/">Microsoft</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vi/">Vi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Net/" style="font-size: 20px;">.Net</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/COM/" style="font-size: 10px;">COM</a> <a href="/tags/Clr/" style="font-size: 15px;">Clr</a> <a href="/tags/ClrHosting/" style="font-size: 15px;">ClrHosting</a> <a href="/tags/FIX/" style="font-size: 10px;">FIX</a> <a href="/tags/Microsoft/" style="font-size: 15px;">Microsoft</a> <a href="/tags/Plugin/" style="font-size: 10px;">Plugin</a> <a href="/tags/REST/" style="font-size: 15px;">REST</a> <a href="/tags/RESTful/" style="font-size: 15px;">RESTful</a> <a href="/tags/Vi/" style="font-size: 10px;">Vi</a> <a href="/tags/Vim/" style="font-size: 10px;">Vim</a> <a href="/tags/XML/" style="font-size: 10px;">XML</a> <a href="/tags/json/" style="font-size: 15px;">json</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">Junho 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/12/">Dezembro 2012</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/06/28/Integrando-C-e-C-via-servico-REST-Parte-II/">Integrando C# e C++ via serviço REST - Parte II</a>
+          </li>
+        
+          <li>
+            <a href="/2015/06/02/Plugin-para-o-Vim/">Plugin para o Vim</a>
+          </li>
+        
+          <li>
+            <a href="/2015/06/02/Integrando-C-e-C-via-servico-REST/">Integrando C# e C++ via serviço REST</a>
+          </li>
+        
+          <li>
+            <a href="/2012/12/07/Clr-Hosting-Transferindo-Objetos/">Clr Hosting - Transferindo Objetos</a>
+          </li>
+        
+          <li>
+            <a href="/2012/12/07/Clr-Hosting/">Clr Hosting</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Vitor Appolinario<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
