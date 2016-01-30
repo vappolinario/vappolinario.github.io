@@ -13,10 +13,11 @@
 <meta property="og:description" content="No último artigo demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win">
 <meta property="og:image" content="http://4.bp.blogspot.com/-AyKbxpwVKGk/ULZ0cZafBwI/AAAAAAAACzw/d_SNDZUtdNk/s1600/tlbexp.png">
 <meta property="og:image" content="http://1.bp.blogspot.com/-kqFs2yV6_pA/ULZ-n3p1ZvI/AAAAAAAAC0A/WGiw4CVGick/s1600/Soma.png">
-<meta property="og:updated_time" content="2016-01-30T14:23:57.000Z">
+<meta property="og:updated_time" content="2016-01-30T18:17:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clr Hosting - Transferindo Objetos">
 <meta name="twitter:description" content="No último artigo demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win">
+<meta name="twitter:creator" content="@vappolinario">
   
     <link rel="alternative" href="/atom.xml" title="appolinario.com" type="application/atom+xml">
   
@@ -89,6 +90,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>No <a href="http://appolinario.com/2012/12/07/Clr-Hosting/">último <span id="goog_411732278"></span>artigo</a> <span id="goog_411732279"></span>demonstrei como carregar e iniciar a CLR dentro de um processo não gerenciado e como executar um código simples, porém o objetivo é utilizar componentes .Net dentro de um processo Win32. Para isso iremos criar um formulário no lado .Net, exibir utilizando o C++ e alimentar este formulário com dados da parte não gerenciada.</p>
+<a id="more"></a>
 <h3 id="COM">COM</h3><p>Essa troca de objetos entre o modo gerenciado e não gerenciado será feito através de interfaces COM dentro do mesmo processo, mas para termos as interfaces acessíveis tanto na parte .Net quanto C++ é preciso que sejam declaradas em um dos lados e depois exportar para o outro. Neste artigo declaramos as interfaces no lado .Net e usaremos a ferramenta tlbexp.exe para gerar um arquivo _<strong>tlb</strong> _o qual será incluído nos fontes do lado C++.</p>
 <h3 id="Declarando_as_Interfaces">Declarando as Interfaces</h3><p>Dentro do projeto .Net declaramos as duas interfaces que serão utilizadas, tanto a que será implementada no .Net quanto no C++ e compilamos isso em uma DLL.<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]</span><br><span class="line">[ComVisible(<span class="keyword">true</span>)]</span><br><span class="line">[Guid(<span class="string">"F0483A98-DE08-4886-AAD5-E4FDBA0DA482"</span>)]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IManagedControl</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function">IntPtr <span class="title">CreateForm</span>(<span class="params">IUnmanagedCode code</span>)</span>;</span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">SetCaption</span>(<span class="params"><span class="keyword">string</span> text</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]</span><br><span class="line">[ComVisible(<span class="keyword">true</span>)]</span><br><span class="line">[Guid(<span class="string">"9FEC93AF-4BA4-4E2E-9213-8EA9A3471E21"</span>)]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IUnmanagedCode</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> a, <span class="keyword">int</span> b</span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>E a partir da dll gerada exportamos isso com a ferramenta <strong>tlbexp.exe </strong>que gera o arquivo <strong>tlb</strong> a ser incluído no código C++.</p>
@@ -113,7 +115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://appolinario.com/2012/12/07/Clr-Hosting-Transferindo-Objetos/" data-id="cik18emsi0011p6n2v4ynk6wo" class="article-share-link">Share</a>
+      <a data-url="http://appolinario.com/2012/12/07/Clr-Hosting-Transferindo-Objetos/" data-id="cik1chhs50011jmn2fxuywwzz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Net/">.Net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/COM/">COM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clr/">Clr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClrHosting/">ClrHosting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Microsoft/">Microsoft</a></li></ul>
@@ -148,6 +150,16 @@
         
           <aside id="sidebar">
   
+      <div class="widget-wrap">
+    <h3 class="widget-title">Profile</h3>
+    <div class="widget">
+		<a href="http://stackexchange.com/users/16541">
+		<img src="http://stackexchange.com/users/flair/16541.png" width="208" height="58" alt="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites">
+		</a>
+    </div>
+  </div>
+
+  
     
   
     
@@ -157,6 +169,7 @@
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Net/">.Net</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COM/">COM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clr/">Clr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClrHosting/">ClrHosting</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FIX/">FIX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Microsoft/">Microsoft</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vi/">Vi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
+
 
   
     

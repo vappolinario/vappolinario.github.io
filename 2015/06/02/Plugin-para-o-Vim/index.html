@@ -11,10 +11,11 @@
 <meta property="og:url" content="http://appolinario.com/2015/06/02/Plugin-para-o-Vim/index.html">
 <meta property="og:site_name" content="appolinario.com">
 <meta property="og:description" content="A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plu">
-<meta property="og:updated_time" content="2016-01-30T01:15:58.000Z">
+<meta property="og:updated_time" content="2016-01-30T17:19:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Plugin para o Vim">
 <meta name="twitter:description" content="A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plu">
+<meta name="twitter:creator" content="@vappolinario">
   
     <link rel="alternative" href="/atom.xml" title="appolinario.com" type="application/atom+xml">
   
@@ -87,6 +88,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>A pouco tempo comecei a utilizar e tentar aprender a trabalhar com o Vi e conforme vou descobrindo suas funcionalidades uma coisa fica evidente, uma das melhores características dele é o suporte a plugins. E existem muitos, para diversas funções. Alguns testei por um tempo, outros já não deixo de usar de maneira nenhuma.<br>E vendo essa diversidade de plugins e com tanta gente fazendo e utilizando acabei me interessando bastante, e quis aprender um pouco mais. E pra começar a entender nada melhor que fazer um plugin simples que me ajudaria com uma atividade corriqueira do trabalho.</p>
+<a id="more"></a>
 <h3 id="A_motivação">A motivação</h3><p>No dia a dia, muitas vezes me deparo com mensagens do <a href="http://en.wikipedia.org/wiki/Financial_Information_eXchange" target="_blank" rel="external">protocolo FIX</a>, que possui um formato de pares chave e valor, separados por um ‘=’ e esses pares separados por um caractere ASCII 01. Normalmente preciso destes valores transformados em um formato mais fácil de ler e com os códigos numéricos dos campos <em>traduzidos</em> para os nomes, pois com frequência preciso visualizar essas mensagens extraídas de <em>logs</em> de aplicação. Até aí eu poderia desenvolver algum aplicativo pra quebrar a mensagem e ver os valores, mas por motivos de aprendizado preferi fazer um plugin pro vi, que é onde costumo abrir esses arquivos de <em>log</em>.</p>
 <h3 id="O_plugin">O plugin</h3><p>O primeiro passo foi procurar material sobre desenvolvimento de plugin pro vi, o que acreditava não ser tão difícil pois o Vi e a grande maioria desses plugins são de <a href="https://github.com/search?utf8=%E2%9C%93&amp;q=vim+plugin&amp;ref=simplesearch" target="_blank" rel="external">código aberto</a>. E foi mais fácil que imaginava, o próprio vi e tem no seu sistema de ajuda, que é ótimo por sinal, uma seção dedicada a <a href="http://vimdoc.sourceforge.net/htmldoc/usr_41.html" target="_blank" rel="external">criação de plugins</a>. Mas aqui não vou traduzir a página de ajuda, mas sim comentar sobre o que mais precisei e o que achei de diferença para as linguagens que eu conheço.</p>
 <h3 id="O_código">O código</h3><h4 id="Sintaxe">Sintaxe</h4><p>A sintaxe da VimL é bem familiar para qualquer desenvolvedor que já tenha trabalhado com <strong>bash</strong>, <strong>C</strong>, javascript. Com a diferença sendo a interação com os <em>buffers</em>, janelas e barra de comandos do Vi. Como o código fica parecido com essas linguagens já elimina um choque&nbsp;cultural&nbsp;logo de início.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> a == <span class="string">'a'</span></span><br><span class="line">    let b = <span class="number">0</span></span><br><span class="line">endif</span><br></pre></td></tr></table></figure></p>
@@ -110,7 +112,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://appolinario.com/2015/06/02/Plugin-para-o-Vim/" data-id="cik18emrj0000p6n26b1ulkob" class="article-share-link">Share</a>
+      <a data-url="http://appolinario.com/2015/06/02/Plugin-para-o-Vim/" data-id="cik1chhr60000jmn27fzotgy0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FIX/">FIX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Plugin/">Plugin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vi/">Vi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vim/">Vim</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XML/">XML</a></li></ul>
@@ -145,6 +147,16 @@
         
           <aside id="sidebar">
   
+      <div class="widget-wrap">
+    <h3 class="widget-title">Profile</h3>
+    <div class="widget">
+		<a href="http://stackexchange.com/users/16541">
+		<img src="http://stackexchange.com/users/flair/16541.png" width="208" height="58" alt="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites">
+		</a>
+    </div>
+  </div>
+
+  
     
   
     
@@ -154,6 +166,7 @@
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Net/">.Net</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COM/">COM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clr/">Clr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClrHosting/">ClrHosting</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FIX/">FIX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Microsoft/">Microsoft</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vi/">Vi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
+
 
   
     

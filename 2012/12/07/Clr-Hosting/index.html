@@ -12,10 +12,11 @@
 <meta property="og:site_name" content="appolinario.com">
 <meta property="og:description" content="Eu deparei recentemente com a necessidade de adicionar novos recursos em uma aplicação C++ nativa, onde a complexidade de realizar alterações neste sistema faz com que o o esforço seja compatível ao t">
 <meta property="og:image" content="http://4.bp.blogspot.com/-VeVbiTlZD-M/UK6afDcbeWI/AAAAAAAACzY/RHTXgnFSo9k/s1600/ResultClr.png">
-<meta property="og:updated_time" content="2016-01-30T00:45:52.000Z">
+<meta property="og:updated_time" content="2016-01-30T18:17:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clr Hosting">
 <meta name="twitter:description" content="Eu deparei recentemente com a necessidade de adicionar novos recursos em uma aplicação C++ nativa, onde a complexidade de realizar alterações neste sistema faz com que o o esforço seja compatível ao t">
+<meta name="twitter:creator" content="@vappolinario">
   
     <link rel="alternative" href="/atom.xml" title="appolinario.com" type="application/atom+xml">
   
@@ -87,8 +88,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><span style="background-color: white; color: #222222; font-family: arial, sans-serif; font-size: 13px;">Eu </span><span style="background-color: white; color: #241007; font-family: Arial, Tahoma, Helvetica, FreeSans, sans-serif; font-size: 14px; line-height: 22.366666793823242px;">deparei recentemente com a necessidade de adicionar novos recursos em uma aplicação C++ nativa,</span><span style="background-color: white; color: #241007; font-family: Arial, Tahoma, Helvetica, FreeSans, sans-serif; font-size: 14px; line-height: 22.366666793823242px;"> onde a complexidade de realizar alterações neste sistema faz com que o o esforço seja compatível ao tamanho da aplicação ou seja, grande. </span><span style="background-color: white; color: #241007; font-family: Arial, Tahoma, Helvetica, FreeSans, sans-serif; font-size: 14px; line-height: 22.366666793823242px;">Minha vantagem é a disponibilidade de diversas ferramentas desenvolvidas em .Net que com um pouco de adaptação atenderiam perfeitamente as necessidades. Assim meu problema se resume a um sistema de difícil manutenção de um lado e do outro um conjunto de componentes prontos, a decisão foi tentar integrar tudo.</span></p>
-<p>Geralmente a carga da CLR é transparente para as aplicações desenvolvidas e compiladas em .Net, porém o .Net framework fornece uma API que permite carregar a CLR dentro de um processo não gerenciado. E esse tipo de carga é conhecido como CLR Hosting.</p>
+        <p>Eu deparei recentemente com a necessidade de adicionar novos recursos em uma aplicação C++ nativa, onde a complexidade de realizar alterações neste sistema faz com que o o esforço seja compatível ao tamanho da aplicação ou seja, grande. Minha vantagem é a disponibilidade de diversas ferramentas desenvolvidas em .Net que com um pouco de adaptação atenderiam perfeitamente as necessidades. Assim meu problema se resume a um sistema de difícil manutenção de um lado e do outro um conjunto de componentes prontos, a decisão foi tentar integrar tudo.<br><a id="more"></a><br>Geralmente a carga da CLR é transparente para as aplicações desenvolvidas e compiladas em .Net, porém o .Net framework fornece uma API que permite carregar a CLR dentro de um processo não gerenciado. E esse tipo de carga é conhecido como CLR Hosting.</p>
 <h2 id="Carregando_a_CLR">Carregando a CLR</h2><p>Como este exemplo esta sendo feito para carregar o .Net 4.0, para utilizar as bibliotecas é preciso carregar a MSCorEE.dll e incluir o header.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">pragma</span> comment(lib, <span class="string">"mscoree.lib"</span>)</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">"metahost.h"</span></span></span><br></pre></td></tr></table></figure><br>Depois disso utilizaremos 3 interfaces dessa biblioteca<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ICLRMetaHost *pMetaHost = <span class="literal">nullptr</span>;</span><br><span class="line">ICLRRuntimeInfo *pRuntimeInfo = <span class="literal">nullptr</span>;</span><br><span class="line">ICLRRuntimeHost *pClrRuntimeHost = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure><br>Através da <em>ICLRMetaHost</em> nós podemos obter informações sobre as versões da CLR disponíveis no sistema, ver quais estão carregadas e, o que usaremos neste artigo, carregar uma versão específica. Para obter a instância dessa interface precisamos usar o método abaixo:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CLRCreateInstance(CLSID_CLRMetaHost, IID_PPV_ARGS(&amp;pMetaHost));</span><br></pre></td></tr></table></figure><br>Com isso podemos criar a instância de <em>ICLRRuntimeInfo</em> utilizando o método <strong>GetRuntime </strong>que recebe a versão da CLR desejada, o id do tipo de interface desejado e o ponteiro para retorno.</p>
 <h4 id="Atenção">Atenção</h4><ul>
 <li>O valor passado como versão desejada deve ser igual aos nomes dentro da pasta do framework;</li>
@@ -125,7 +125,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://appolinario.com/2012/12/07/Clr-Hosting/" data-id="cik18emse000sp6n2s2j7oo1y" class="article-share-link">Share</a>
+      <a data-url="http://appolinario.com/2012/12/07/Clr-Hosting/" data-id="cik1chhs2000sjmn21s57nnv4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Net/">.Net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Clr/">Clr</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ClrHosting/">ClrHosting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Microsoft/">Microsoft</a></li></ul>
@@ -155,6 +155,16 @@
         
           <aside id="sidebar">
   
+      <div class="widget-wrap">
+    <h3 class="widget-title">Profile</h3>
+    <div class="widget">
+		<a href="http://stackexchange.com/users/16541">
+		<img src="http://stackexchange.com/users/flair/16541.png" width="208" height="58" alt="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for vappolinario on Stack Exchange, a network of free, community-driven Q&amp;A sites">
+		</a>
+    </div>
+  </div>
+
+  
     
   
     
@@ -164,6 +174,7 @@
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Net/">.Net</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/COM/">COM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Clr/">Clr</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ClrHosting/">ClrHosting</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FIX/">FIX</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Microsoft/">Microsoft</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/REST/">REST</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vi/">Vi</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim/">Vim</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/XML/">XML</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </div>
+
 
   
     
